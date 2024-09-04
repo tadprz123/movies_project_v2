@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ movie.title }} - Szczegóły</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ movie.title }}</h1>
+        <p>{{ movie.overview }}</p>
+        <p>Budżet: {{ movie.budget }} USD</p>
+        <p>Gatunki: {{ movie.genres | map(attribute='name') | join(', ') }}</p>
+
+        {% if backdrop %}
+            <img src="{{ tmdb_image_url(backdrop.file_path, 'w780') }}" class="img-fluid mb-4" alt="Backdrop">
+        {% endif %}
+
+        <h2>Obsada</h2>
+        <div class="row">
+            {% for actor in cast %}
+                {% if actor.profile_path %}
+                    <div class="col-md-3 mb-4">
+                        <div class="card">
+                            <img src="{{ tmdb_image_url(actor.profile_path, 'w185') }}" class="card-img-top" alt="{{ actor.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ actor.name }}</h5>
+                                <p>Jako: {{ actor.character }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

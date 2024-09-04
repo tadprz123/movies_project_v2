@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Strona Główna</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Witaj w mojej bibliotece filmów!</h1>
+        <h2>Znajdziesz tu tylko najlepsze tytuły.</h2>
+        <ul class="nav nav-pills mb-4">
+            {% for movie_list in movie_lists %}
+                <li class="nav-item">
+                    <a class="nav-link {% if movie_list == current_list %}active{% endif %}"
+                       href="/?list_type={{ movie_list }}">{{ movie_list | replace('_', ' ') | title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="row">
+            {% for movie in movies %}
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="{{ tmdb_image_url(movie.poster_path, 'w342') }}" class="card-img-top" alt="{{ movie.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <a href="/movie/{{ movie.id }}" class="btn btn-primary">Szczegóły</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
